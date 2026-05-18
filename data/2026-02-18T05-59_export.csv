@@ -1,0 +1,4 @@
+﻿,ip,attempts,risk_score,risk_level,reason
+0,192.168.1.1,8,60,Medium,8 failed login attempts detected
+1,192.168.1.1,16,90,High,16 failed login attempts detected
+2,192.168.1.1,16,100,High,16 failed login attempts detected | Repeat offender detected

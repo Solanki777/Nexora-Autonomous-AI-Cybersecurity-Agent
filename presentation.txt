@@ -1,0 +1,20 @@
+NEXORA – AUTONOMOUS AI CYBERSECURITY AGENT
+Project Documentation (Text Representation)
+
+INTRODUCTION
+My name is Mahesh Solanki, and I am a 5th semester IT student at Shantilal Shah Engineering College. I developed Nexora as an Autonomous AI Cybersecurity Agent that monitors system logs, emails, and user activities in real time to detect and respond to cyber threats intelligently.
+
+PROBLEM STATEMENT
+In today’s digital world, cyber threats such as phishing emails, brute force attacks, and suspicious activities are increasing rapidly. Traditional security systems mainly rely on static rules and manual monitoring, which makes them slow, inefficient, and unable to detect new or unknown attacks. Organizations and users often fail to identify threats in real time, which can lead to data breaches, system compromise, and security failures. There is a strong need for an intelligent and automated security system that can continuously monitor activities, detect anomalies, and respond to threats without human delay.
+
+SOLUTION
+To solve this problem, I designed an AI-based cybersecurity agent that uses real-time monitoring, anomaly detection, and risk scoring to identify malicious behavior. The system analyzes login logs, phishing emails, and suspicious patterns automatically and classifies threats into low, medium, and high risk levels. Instead of depending only on manual intervention, the agent provides instant alerts and autonomous defensive actions, making the security system proactive rather than reactive.
+
+MY PROJECT – NEXORA AI AGENT
+Nexora is an Autonomous AI Cybersecurity Agent that acts like a virtual Security Operations Center (SOC). It continuously monitors login logs to detect brute force attacks, scans Gmail inbox and spam emails for phishing threats, and analyzes URLs for malicious patterns using AI-based risk scoring. The system automatically blocks high-risk IP addresses, moves phishing emails to spam, logs attacker email IDs, and generates security alerts. Nexora also provides a real-time interactive dashboard built with Streamlit that visualizes detected threats, system status, blocked IPs, and threat analytics. Additionally, it includes explainable AI outputs that clearly show why an activity is marked as suspicious, improving transparency and decision-making.
+
+FUTURE ENHANCEMENTS
+In the future, I plan to integrate advanced machine learning models for more accurate threat detection and behavior analysis. The system can be extended to include network traffic monitoring, malware detection, and intrusion detection systems (IDS). I also aim to implement self-learning capabilities so that Nexora can adapt to new attack patterns over time. Cloud deployment, multi-user support, and real-time SIEM (Security Information and Event Management) integration will further enhance the scalability and real-world usability of the project.
+
+CONCLUSION
+In conclusion, Nexora is a smart, self-learning, and proactive cybersecurity solution developed to automate threat detection and response. It reduces human effort, increases detection accuracy, and provides real-time security monitoring through an AI-powered dashboard. By combining artificial intelligence, automation, and real-time analytics, Nexora serves as an intelligent cyber defense system capable of protecting digital environments against modern cyber threats.
