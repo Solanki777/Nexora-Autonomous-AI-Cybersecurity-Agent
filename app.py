@@ -20,7 +20,13 @@ from phishing_detector import predict_phishing
 st_autorefresh(interval=5000, key="datarefresh")
 
 
-blocked_file = r"C:\xampp\htdocs\security_logs\blocked_ips.txt"
+# Configure file paths, preferring the local project directory if present
+base_dir = os.path.dirname(os.path.abspath(__file__))
+local_log_file = os.path.join(base_dir, "security_logs", "login_logs.csv")
+local_blocked_file = os.path.join(base_dir, "security_logs", "blocked_ips.txt")
+
+log_file = local_log_file if os.path.exists(local_log_file) else r"C:\xampp\htdocs\security_logs\login_logs.csv"
+blocked_file = local_blocked_file if os.path.exists(local_blocked_file) else r"C:\xampp\htdocs\security_logs\blocked_ips.txt"
 
 if os.path.exists(blocked_file):
     with open(blocked_file, "r") as f:
@@ -88,8 +94,6 @@ st.divider()
 # ================= LIVE LOGIN LOG READING =================
 
 
-log_file = r"C:\xampp\htdocs\security_logs\login_logs.csv"
-
 if os.path.exists(log_file):
     df = pd.read_csv(log_file, names=["ip", "status", "timestamp"])
     st.write("### 📂 Live Login Logs")
@@ -103,37 +107,36 @@ if os.path.exists(log_file):
         st.write("## 🚨 Threats Detected")
 
         for r in results:
-            r["timestamp"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-            # Risk classification
-            if r["risk_score"] >= 80:
-                r["risk_level"] = "High"
-            elif r["risk_score"] >= 50:
-                r["risk_level"] = "Medium"
-            else:
-                r["risk_level"] = "No"
+            # Skip already blocked IPs
+            if r["ip"] in st.session_state.blocked_ips:
+                continue
 
-            # Autonomous blocking
+            r["timestamp"] = datetime.datetime.now().strftime(
+                "%Y-%m-%d %H:%M:%S"
+            )
+
+            # High-risk threat → block once
             if r["risk_level"] == "High":
 
-                blocked_file = r"C:\xampp\htdocs\security_logs\blocked_ips.txt"
-
                 if r["ip"] not in st.session_state.blocked_ips:
+
                     st.session_state.blocked_ips.append(r["ip"])
-                    send_alert_email(r["ip"])
 
                     with open(blocked_file, "a") as f:
                         f.write(r["ip"] + "\n")
 
-            # Save to history
-            if r not in st.session_state.threat_history:
-                st.session_state.threat_history.append(r)
+                    send_alert_email(r["ip"]) 
+
+            # Save incident once
+            st.session_state.threat_history.append(r)
 
             st.error(f"IP: {r['ip']}")
             st.write(f"Attempts: {r['attempts']}")
             st.write(f"Risk Score: {r['risk_score']}")
             st.write(f"Risk Level: {r['risk_level']}")
             st.write("---")
+            
 
 else:
     st.warning("No login logs found yet.")
@@ -148,11 +151,13 @@ if reset_system:
     st.session_state.system_under_threat = False
     st.session_state.blocked_ips = []
 
-    # Clear blocked file
     with open(blocked_file, "w") as f:
         f.write("")
 
-    st.success("System has been fully reset.")
+    with open(log_file, "w") as f:
+        f.write("")
+
+    st.success("System fully reset.")
 
 
 
