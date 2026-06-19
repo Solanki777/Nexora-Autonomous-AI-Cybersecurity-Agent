@@ -35,38 +35,47 @@ else:
     saved_ips = []
 
 
+
 def send_alert_email(ip):
     import smtplib
     from email.mime.text import MIMEText
 
     sender = "solankimaheshkhash7@gmail.com"
-    password = "uocofsvpylbwnvme"
+    password = "YOUR_APP_PASSWORD"
     receiver = "solankimaheshkhash230@gmail.com"
 
-    subject = "🚨 Nexora Security Alert - IP Blocked"
+    subject = "Nexora Security Notification"
 
     body = f"""
-NEXORA AI SECURITY ALERT
+Nexora Security Notification
 
-The following IP has been automatically blocked:
+A high-risk login event was detected.
 
 Blocked IP: {ip}
 
-Reason: High-risk suspicious activity detected.
-Action: Autonomous block executed.
+The IP has been blocked automatically by Nexora.
 
-System: Nexora AI Agent
-    """
+Regards,
+Nexora Security Agent
+"""
 
     msg = MIMEText(body)
     msg["Subject"] = subject
     msg["From"] = sender
     msg["To"] = receiver
 
-    server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
-    server.login(sender, password)
-    server.sendmail(sender, receiver, msg.as_string())
-    server.quit()
+    try:
+        server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
+        server.login(sender, password)
+        server.sendmail(sender, receiver, msg.as_string())
+        server.quit()
+
+        st.success(f"✅ Alert email sent for {ip}")
+
+    except Exception as e:
+        st.error(f"❌ Email Error: {e}")
+        print("EMAIL ERROR:", e)
+
 
 
 # Initialize session state
