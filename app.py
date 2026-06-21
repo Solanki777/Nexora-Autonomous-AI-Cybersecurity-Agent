@@ -41,7 +41,7 @@ def send_alert_email(ip):
     from email.mime.text import MIMEText
 
     sender = "solankimaheshkhash7@gmail.com"
-    password = "YOUR_APP_PASSWORD"
+    password = "cickfhnatkpbvcsu"
     receiver = "solankimaheshkhash230@gmail.com"
 
     subject = "Nexora Security Notification"

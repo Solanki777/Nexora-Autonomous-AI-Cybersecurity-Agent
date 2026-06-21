@@ -55,30 +55,46 @@ def get_email_body(service, msg_id):
 
     return body
 
+def _list_all_unread(service, label_id):
+    """
+    Returns EVERY unread message for a given label, paging through
+    nextPageToken until Gmail has nothing left to give us. The old
+    version capped at maxResults=10 and didn't filter by read status
+    at all (labelIds alone returns read + unread), so it silently
+    missed unread mail once you had more than 10 messages, and
+    included already-read mail too.
+    """
+    messages = []
+    page_token = None
+
+    while True:
+        request_args = {
+            'userId': 'me',
+            'labelIds': [label_id],
+            'q': 'is:unread',       # <-- actually filter to unread
+            'maxResults': 100,      # Gmail's max per page
+        }
+        if page_token:
+            request_args['pageToken'] = page_token
+
+        results = service.users().messages().list(**request_args).execute()
+        messages.extend(results.get('messages', []))
+
+        page_token = results.get('nextPageToken')
+        if not page_token:
+            break
+
+    return messages
+
+
 def fetch_unread_emails(service):
     all_messages = []
 
-    # 1️⃣ Fetch recent emails from INBOX (unread priority)
-    inbox_results = service.users().messages().list(
-        userId='me',
-        labelIds=['INBOX'],
-        maxResults=10
-    ).execute()
+    # 1️⃣ ALL unread emails from INBOX (no 10-message cap)
+    all_messages.extend(_list_all_unread(service, 'INBOX'))
 
-    inbox_messages = inbox_results.get('messages', [])
-
-    # 2️⃣ Fetch recent emails from SPAM (IMPORTANT FIX)
-    spam_results = service.users().messages().list(
-        userId='me',
-        labelIds=['SPAM'],
-        maxResults=10
-    ).execute()
-
-    spam_messages = spam_results.get('messages', [])
-
-    # Combine both sources
-    all_messages.extend(inbox_messages)
-    all_messages.extend(spam_messages)
+    # 2️⃣ ALL unread emails from SPAM
+    all_messages.extend(_list_all_unread(service, 'SPAM'))
 
     return all_messages
 import re  # ADD THIS AT TOP
