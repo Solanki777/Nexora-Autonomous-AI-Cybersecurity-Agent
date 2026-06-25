@@ -1,5 +1,7 @@
 # 🛡️ Nexora – Autonomous AI Cybersecurity Agent
 
+# NOW ON IT IS INEGRATED WITH MY HUMAN CARE PROJECT SO NO MODIFICATIONS HERE NOW ON ALL COMMIT'S RELATED TO THIS PROJECTS WILL DONE ON HUMAN CARE 
+
 ## Overview
 
 Nexora is an **Autonomous AI Cybersecurity Agent** designed to act as a virtual Security Operations Center (SOC). It continuously monitors system environments in real-time to detect and respond to cyber threats intelligently. 
